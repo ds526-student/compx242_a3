@@ -4,4 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="park_info_green">#558B2F</color>
     <color name="app_background_color">#F7F9F9</color>
+
+
+    <color name="icon_tint">@android:color/darker_gray</color>
+    <color name="text_hint">@android:color/darker_gray</color>
+    <color name="text_primary">#FF000000</color>
 </resources>
