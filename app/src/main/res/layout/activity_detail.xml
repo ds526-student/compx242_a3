@@ -11,126 +11,126 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/activity_padding">
+        android:padding="@dimen/padding_default">
 
+        <!-- Logo -->
         <ImageView
             android:id="@+id/logoImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/logo_size"
+            android:layout_height="@dimen/logo_size"
             android:layout_gravity="center_horizontal"
-            android:adjustViewBounds="true"
+            android:layout_marginBottom="@dimen/margin_large"
             android:contentDescription="@string/app_logo_description"
-            android:maxWidth="@dimen/logo_max_size"
-            android:maxHeight="@dimen/logo_max_size"
             android:src="@drawable/img_logo_main_park_locator" />
 
+        <!-- Park Name -->
         <TextView
             android:id="@+id/parkNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/margin_large"
             android:textColor="@color/text_primary"
-            android:textSize="@dimen/font_size_title"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
             tools:text="Jansen Park" />
 
+        <!-- Park Image -->
         <ImageView
             android:id="@+id/parkImageView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/park_image_height"
-            android:layout_marginTop="@dimen/spacing_large"
-            android:scaleType="centerCrop"
+            android:layout_marginBottom="@dimen/margin_large"
             android:contentDescription="@string/park_image_description"
+            android:scaleType="centerCrop"
             tools:src="@tools:sample/backgrounds/scenic" />
 
+        <!-- Address -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/spacing_xlarge">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/address_label"
                 android:textColor="@color/text_primary"
-                android:textSize="@dimen/font_size_subtitle"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/addressTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:textSize="@dimen/font_size_body"
+                android:textSize="@dimen/text_size_medium"
                 tools:text="Morris Road, Silverdale, Hamilton 3216, New Zealand" />
         </LinearLayout>
 
+        <!-- Hours -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/spacing_large">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/hours_label"
                 android:textColor="@color/text_primary"
-                android:textSize="@dimen/font_size_subtitle"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/hoursTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:textSize="@dimen/font_size_body"
+                android:textSize="@dimen/text_size_medium"
                 tools:text="Opening hours not available" />
         </LinearLayout>
 
+        <!-- Weather -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/spacing_large">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/current_weather_label"
                 android:textColor="@color/text_primary"
-                android:textSize="@dimen/font_size_subtitle"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/weatherTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:textSize="@dimen/font_size_body"
+                android:textSize="@dimen/text_size_medium"
                 tools:text="Temperature 12.1°C, Patchy rain nearby" />
         </LinearLayout>
 
+        <!-- Rating & Reviews -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/spacing_large">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rating_reviews_label"
                 android:textColor="@color/text_primary"
-                android:textSize="@dimen/font_size_subtitle"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/rating_container_height"
-                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -146,8 +146,7 @@
                     android:id="@+id/reviewsTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_medium"
-                    android:textSize="@dimen/font_size_body"
+                    android:layout_marginStart="@dimen/margin_small"
                     tools:text="4.5 stars (438 reviews)" />
             </LinearLayout>
         </LinearLayout>

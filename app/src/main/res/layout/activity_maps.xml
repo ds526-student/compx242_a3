@@ -12,39 +12,34 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="3">
 
         <ImageView
             android:id="@+id/logoImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/logo_height"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:src="@drawable/img_logo_main_park_locator"
-            android:contentDescription="@string/app_logo_description"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true" />
+            android:contentDescription="@string/app_logo_description" />
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/searchCardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_large"
-        android:layout_marginStart="@dimen/margin_medium"
-        android:layout_marginEnd="@dimen/margin_medium"
-        app:cardCornerRadius="@dimen/card_corner_radius"
-        app:cardElevation="@dimen/card_elevation" >
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:cardElevation="0dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="@dimen/padding_default">
+            android:gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/searchIcon"
-                android:layout_width="@dimen/icon_size"
-                android:layout_height="@dimen/icon_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_search"
                 android:contentDescription="@string/search_icon_description"
                 app:tint="@color/icon_tint" />
@@ -55,7 +50,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/search_a_place"
                 android:textSize="@dimen/text_size_medium"
-                android:layout_marginStart="@dimen/margin_small"
                 android:textColor="@color/text_hint" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -66,7 +60,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="8"
         tools:context=".MapsActivity" />
 
 </LinearLayout>
