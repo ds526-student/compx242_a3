@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="park_info_green">#558B2F</color>
+    <color name="app_background_color">#F7F9F9</color>
 </resources>
