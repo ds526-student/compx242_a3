@@ -1,40 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/main"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@android:color/white"
-android:orientation="vertical"
-tools:context=".MainActivity">
-
-<ImageView
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="4"
-    android:scaleType="centerInside"
-    android:src="@drawable/img_logo_main_park_locator"
-    />
+    android:layout_height="match_parent"
+    android:background="@color/app_background_color">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:layout_margin="@dimen/margin_medium">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
 
-        <Button
-            android:id="@+id/buttonPlay"
+        <ImageView
+            android:id="@+id/iv_header_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/start_button_text"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="@color/park_info_green" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:padding="48dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_logo_main_park_locator" />
 
-</LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_margin="20dp">
 
-
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/start_button_text"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_medium"
+                android:backgroundTint="@color/park_info_green"
+                android:onClick="onClickStart" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

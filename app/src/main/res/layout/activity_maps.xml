@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,26 +10,21 @@
     tools:context=".MapsActivity">
 
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:src="@drawable/img_logo_main_park_locator" />
+
+    <!-- Placeholder until api integration is complete -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:layout_margin="@dimen/margin_medium">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerInside"
-            android:src="@drawable/img_logo_main_park_locator" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_margin="@dimen/margin_large"
+        android:paddingLeft="@dimen/margin_small"
+        android:paddingRight="@dimen/margin_small"
         >
         <ImageView
             android:id="@+id/searchIcon"
@@ -49,13 +45,12 @@
             android:textSize="@dimen/text_size_medium" />
     </LinearLayout>
 
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_weight="10"
         tools:context=".MapsActivity" />
 
 </LinearLayout>
