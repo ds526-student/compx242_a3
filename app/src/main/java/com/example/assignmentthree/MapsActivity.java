@@ -80,6 +80,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MarkerOptions marker = new MarkerOptions().position(latLng).title("My Current Location");
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+        googleMap.addMarker(marker);
     }
 
     @Override
