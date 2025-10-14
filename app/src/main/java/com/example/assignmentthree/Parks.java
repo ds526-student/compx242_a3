@@ -11,14 +11,14 @@ import java.util.ArrayList;
 
 public class Parks implements Parcelable {
 
-    public String placeId;
-    public String name;
-    public double lat;
-    public double lng;
-    public String address;
-    public String hours;
-    public ArrayList<String> reviews;
-    public double rating;
+    public String placeId; // google place id
+    public String name; // park name
+    public double lat; // park lat location
+    public double lng; // park lng location
+    public String address; // park address
+    public String hours; // park hours
+    public ArrayList<String> reviews; // park reviews
+    public double rating; // star rating (x/5)
 
     public Parks() {}
 
