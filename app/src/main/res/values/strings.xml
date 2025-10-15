@@ -7,6 +7,12 @@
     <string name="search_icon_description">Search Icon</string>
     <string name="search_a_place">Search a place</string>
 
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
 
     <!-- detail activity -->
     <!-- labels -->
@@ -20,5 +26,6 @@
     <string name="hours_placeholder">Opening hours not available</string>
     <string name="weather_placeholder">Weather unavailable</string>
     <string name="reviews_placeholder">Rating unavailable</string>
+    <string name="name_placeholder">Name unavailable</string>
 
 </resources>

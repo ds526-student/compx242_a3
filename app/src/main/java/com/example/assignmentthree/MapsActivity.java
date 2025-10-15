@@ -39,6 +39,9 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.PlaceAutocomplete;
 import com.google.android.libraries.places.widget.PlaceAutocompleteActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -52,6 +55,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ParkFinder pf; // park finder object
     private AutoCompleteTextView searchBar; // search bar for locations
     private Marker searchMarker; // marker for searched location
+    private ArrayList<Parks> parksList = new ArrayList<>(); // list of parks
 
     /**
      *
@@ -142,6 +146,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
         mMap.addMarker(marker);
 
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if (marker.getTag() != null) {
+                    onParkClick(marker);
+                    return true;
+                }
+                return false;
+            }
+        });
+
         // find nearby parks
         findNearbyParks(latLng);
     }
@@ -160,14 +175,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onSuccess(ArrayList<Parks> parks) {
                 Log.d("MapsActivity", "SUCCESS: Received " + parks.size() + " parks");
+                parksList = parks;
                 runOnUiThread(() -> {
                     for (Parks p : parks) {
                         Log.d("MapsActivity", "Adding park: " + p.name);
-                        mMap.addMarker(new MarkerOptions()
+                        Marker marker = mMap.addMarker(new MarkerOptions()
                                 .position(p.getLatLng())
                                 .title(p.name)
                                 .snippet(p.address)
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_marker_location_park)));
+
+                        if (marker != null) {
+                            marker.setTag(p);
+                        }
                     }
                 });
             }
@@ -249,4 +269,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     });
                 }
             });
+
+    /**
+     * when a valid park marker is clicked on, start detail activity
+     * @param marker the marker to check
+     */
+    public void onParkClick(Marker marker){
+        Log.d("MapsActivity", "onParkClick called with marker title: " + marker.getTitle());
+        Log.d("MapsActivity", "Marker position: " + marker.getPosition());
+        Log.d("MapsActivity", "Marker tag: " + marker.getTag());
+        Log.d("MapsActivity", "Parks list size: " + parksList.size());
+
+        Parks parkObject = (Parks) marker.getTag();
+
+        if (parkObject != null) {
+            Intent intent = new Intent(MapsActivity.this, DetailActivity.class);
+            intent.putExtra("park", parkObject);
+            startActivity(intent);
+        }
+        else {
+            Log.e("MapsActivity", "Park object is null");
+        }
+    }
 }

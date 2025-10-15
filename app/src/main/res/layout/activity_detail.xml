@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".DetailActivity">
 
     <LinearLayout
@@ -15,7 +16,7 @@
 
         <!-- Logo -->
         <ImageView
-            android:id="@+id/iv_image"
+            android:id="@+id/iv_logo"
             android:layout_width="150dp"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
@@ -33,7 +34,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
-            tools:text="Jansen Park" />
+            tools:text="@string/name_placeholder" />
 
         <!-- Park Image -->
         <ImageView
@@ -67,7 +68,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_small"
                 android:layout_marginBottom="@dimen/margin_small"
-                tools:text="@string/address_placeholder" />
+                tools:text="@string/address_placeholder"
+                android:textColor="@color/black"/>
         </LinearLayout>
 
         <!-- hours group -->
@@ -92,7 +94,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_small"
                 android:layout_marginBottom="@dimen/margin_small"
-                tools:text="@string/hours_placeholder" />
+                tools:text="@string/hours_placeholder"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <!-- weather group -->
@@ -117,7 +120,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_small"
                 android:layout_marginBottom="@dimen/margin_small"
-                tools:text="@string/weather_placeholder" />
+                tools:text="@string/weather_placeholder"
+                android:textColor="@color/black" />
         </LinearLayout>
 
 
@@ -149,14 +153,16 @@
                     android:layout_height="wrap_content"
                     android:isIndicator="true"
                     android:numStars="5"
-                    tools:rating="0" />
+                    tools:rating="0"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/tv_reviews_overview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_small"
-                    tools:text="@string/reviews_placeholder" />
+                    tools:text="@string/reviews_placeholder"
+                    android:textColor="@color/black" />
             </LinearLayout>
         </LinearLayout>
 
