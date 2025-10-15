@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_small"
                 android:layout_marginBottom="@dimen/margin_small"
-                tools:text="Morris Road, Silverdale, Hamilton 3216, New Zealand" />
+                tools:text="@string/address_placeholder" />
         </LinearLayout>
 
         <!-- hours group -->
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_small"
                 android:layout_marginBottom="@dimen/margin_small"
-                tools:text="Opening hours not available" />
+                tools:text="@string/hours_placeholder" />
         </LinearLayout>
 
         <!-- weather group -->
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_small"
                 android:layout_marginBottom="@dimen/margin_small"
-                tools:text="Temperature 12.1°C, Patchy rain nearby" />
+                tools:text="@string/weather_placeholder" />
         </LinearLayout>
 
 
@@ -149,14 +149,14 @@
                     android:layout_height="wrap_content"
                     android:isIndicator="true"
                     android:numStars="5"
-                    tools:rating="4.5" />
+                    tools:rating="0" />
 
                 <TextView
                     android:id="@+id/tv_reviews_overview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_small"
-                    tools:text="4.5 stars (438 reviews)" />
+                    tools:text="@string/reviews_placeholder" />
             </LinearLayout>
         </LinearLayout>
 

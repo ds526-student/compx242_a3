@@ -7,14 +7,18 @@
     <string name="search_icon_description">Search Icon</string>
     <string name="search_a_place">Search a place</string>
 
+
+    <!-- detail activity -->
+    <!-- labels -->
     <string name="address_label">Address:</string>
     <string name="hours_label">Hours:</string>
     <string name="current_weather_label">Current Weather:</string>
     <string name="rating_reviews_label">Rating &amp; Reviews</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+
+    <!-- placeholder text -->
+    <string name="address_placeholder">Address unavailable</string>
+    <string name="hours_placeholder">Opening hours not available</string>
+    <string name="weather_placeholder">Weather unavailable</string>
+    <string name="reviews_placeholder">Rating unavailable</string>
 
 </resources>
