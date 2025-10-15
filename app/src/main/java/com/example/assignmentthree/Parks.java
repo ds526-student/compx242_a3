@@ -20,9 +20,15 @@ public class Parks implements Parcelable {
     public ArrayList<String> reviews; // park reviews
     public double rating; // star rating (x/5)
 
+    /**
+     * default empty constructor
+     */
     public Parks() {}
 
-    // passes api response to create a Parks object
+    /**
+     * parses json object data into a parks object
+     * @param json json object containing park data
+     */
     public Parks(JSONObject json) {
         // return if item is null
         if (json == null) return;
@@ -42,12 +48,18 @@ public class Parks implements Parcelable {
         }
     }
 
-    // splits latlng into separate doubles
+    /**
+     * get latlng of park
+     * @return LatLng object containing park latitude and longitude
+     */
     public LatLng getLatLng() {
         return new LatLng(lat, lng);
     }
 
-    // defines parcelable object to be passed between activities
+    /**
+     * parcelable constructor to be used by parcel
+     * @param in parcel object
+     */
     protected Parks(Parcel in) {
         placeId = in.readString();
         name = in.readString();
@@ -57,7 +69,9 @@ public class Parks implements Parcelable {
         rating = in.readDouble();
     }
 
-    // creates a parcelable object
+    /**
+     * creates a parcelable creator for parks objects
+     */
     public static final Creator<Parks> CREATOR = new Creator<Parks>() {
         @Override
         public Parks createFromParcel(Parcel in) {
@@ -70,10 +84,19 @@ public class Parks implements Parcelable {
         }
     };
 
+    /**
+     * describe contents of parcel
+     * @return 0
+     */
     @Override
     public int describeContents() { return 0; }
 
-    // writes parks object data to a parcel
+    /**
+     * write parcelable object to parcel
+     * @param dest The Parcel in which the object should be written.
+     * @param flags Additional flags about how the object should be written.
+     * May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(placeId);

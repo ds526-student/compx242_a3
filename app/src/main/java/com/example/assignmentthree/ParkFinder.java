@@ -22,18 +22,29 @@ public class ParkFinder {
     private RequestQueue queue; // to send requests
     private String apiKey = "AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo"; // api key to assess api/s
 
-    // interface to handle results
+    /**
+     * callback interface for getting parks
+     */
     public interface Callback {
         void onSuccess(ArrayList<Parks> parks);
         void onError(Exception e);
     }
 
-    // constructor
+    /**
+     * constructor
+     * @param c Context object
+     */
     public ParkFinder(Context c) {
         this.queue = Volley.newRequestQueue(c.getApplicationContext());
     }
 
-    // get parks nearby
+    /**
+     * get parks from api
+     * @param location user location
+     * @param radius search radius in metres
+     * @param limit maximum number of parks to select
+     * @param cb callback interface
+     */
     public void getParks(LatLng location, int radius, int limit, Callback cb) {
         if (cb == null) return;
 
@@ -71,7 +82,13 @@ public class ParkFinder {
         queue.add(req);
     }
 
-    // parse response to create a list of Parks objects
+    /**
+     * parse json object into parks array
+     * @param json json data to parse
+     * @param limit maximum number of parks to select
+     * @return an array of parks
+     * @throws JSONException if json is invalid
+     */
     private ArrayList<Parks> parse(JSONObject json, int limit) throws JSONException {
         ArrayList<Parks> list = new ArrayList<>();
         if (json == null) return list;

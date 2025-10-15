@@ -1,12 +1,18 @@
 package com.example.assignmentthree;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -20,11 +26,21 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.PlaceAutocomplete;
+import com.google.android.libraries.places.widget.PlaceAutocompleteActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -34,19 +50,55 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FusedLocationProviderClient fusedLocation; // location provider
     private static final int REQUEST_LOCATION_PERMISSION = 101; // request code
     private ParkFinder pf; // park finder object
+    private AutoCompleteTextView searchBar; // search bar for locations
+    private Marker searchMarker; // marker for searched location
 
+    /**
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // sets up places api
+        Places.initialize(getApplicationContext(), "AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo");
+
         fusedLocation = LocationServices.getFusedLocationProviderClient(this);
         pf = new ParkFinder(this);
+
+        // gets search bar and initiates search functionality
+        searchBar = findViewById(R.id.searchBar);
+        initialiseSearchBar();
+
         getLocation();
     }
 
-    // gets the users current location
+    /**
+     * initialise search bar and call open autocomplete intent
+     */
+    private void initialiseSearchBar(){
+        searchBar.setFocusable(false);
+        searchBar.setClickable(true);
+        searchBar.setOnClickListener(v -> startSearch());
+    }
+
+    /**
+     * open autocomplete intent
+     */
+    private void startSearch() {
+        Intent autocompleteIntent = new PlaceAutocomplete.IntentBuilder().build(this);
+        searchLauncher.launch(autocompleteIntent);
+    }
+
+    /**
+     * gets and returns user location
+     */
     private void getLocation(){
         // checks if permission is granted
         if (ActivityCompat.checkSelfPermission(
@@ -73,7 +125,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    // creates map when ready
+    /**
+     * when map is ready, add marker and find nearby parks
+     * @param googleMap GoogleMap object
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // go to current location and display marker
@@ -84,20 +139,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .title("My Current Location")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_marker_location_current));
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
         mMap.addMarker(marker);
 
         // find nearby parks
         findNearbyParks(latLng);
     }
 
-    // finds nearby parks
+    /**
+     * find nearby parks using ParkFinder
+     * @param location the users current location
+     */
     private void findNearbyParks(LatLng location) {
 
         Log.d("MapsActivity", "findNearbyParks called with: " + location.latitude + "," + location.longitude);
 
         // current location | radius | limit | callback
-        pf.getParks(location, 50000, 10, new ParkFinder.Callback() {
+        pf.getParks(location, 20000, 10, new ParkFinder.Callback() {
             // if successful, add parks to map
             @Override
             public void onSuccess(ArrayList<Parks> parks) {
@@ -118,14 +176,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onError(Exception e) {
                 runOnUiThread(() -> {
-                    Log.e("MapsActivity", "Error finding parks", e); // FIXED: import
-                    Toast.makeText(MapsActivity.this, "Could not find nearby parks.", Toast.LENGTH_SHORT).show(); // FIXED: import
+                    Log.e("MapsActivity", "Error finding parks", e);
+                    Toast.makeText(MapsActivity.this, "Could not find nearby parks.", Toast.LENGTH_SHORT).show();
                 });
             }
         });
     }
 
-    // request location permission
+    /**
+     *
+     * @param requestCode The request code passed in {@link //requestPermissions(
+     * android.app.Activity, String[], int)}
+     * @param permissions The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     *     which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
+     *     or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
+     *
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -135,4 +202,51 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
     }
+
+    /**
+     * use autocomplete intent to find a location, place a marker, and zoom in
+     */
+    private final ActivityResultLauncher<Intent> searchLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                // if start activity result is successful, get prediction
+                if (result.getResultCode() == PlaceAutocompleteActivity.RESULT_OK && result.getData() != null) {
+                    AutocompletePrediction prediction = PlaceAutocomplete.getPredictionFromIntent(result.getData()); // the prediction from the autocomplete intent
+                    String placeName = prediction.getPrimaryText(null).toString(); // the name of the place
+
+                    searchBar.setText(placeName); // updates search bar text
+
+                    // get location latlng
+                    PlacesClient client = Places.createClient(this);
+                    FetchPlaceRequest request = FetchPlaceRequest.builder(
+                            prediction.getPlaceId(),
+                            Arrays.asList(Place.Field.LOCATION, Place.Field.DISPLAY_NAME)
+                    ).build();
+
+                    client.fetchPlace(request).addOnSuccessListener(response -> {
+                        Place place = response.getPlace();
+                        LatLng location = place.getLocation();
+
+                        if (location != null) {
+                            // remove all previous markers
+                            if (searchMarker != null) {
+                                searchMarker.remove();
+                            }
+
+                            // add marker at searched location
+                            searchMarker = mMap.addMarker(new MarkerOptions()
+                                    .position(location)
+                                    .title(placeName)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_marker_location_searched)));
+
+                            // pan to searched location
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+                        }
+                    // if error, log error
+                    }).addOnFailureListener(e -> {
+                        Log.e("Search", "Failed to get place location: " + e.getMessage());
+                        Toast.makeText(this, "Couldn't find that location", Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
 }
