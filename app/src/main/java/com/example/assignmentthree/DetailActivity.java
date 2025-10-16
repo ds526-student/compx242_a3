@@ -11,7 +11,9 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class DetailActivity extends AppCompatActivity {
@@ -28,6 +31,8 @@ public class DetailActivity extends AppCompatActivity {
 
     private String placeRequestURL = "https://maps.googleapis.com/maps/api/streetview?size=720x1280&key=AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo&location=";
     private String weatherRequestURL = "https://api.weatherapi.com/v1/current.json?key=5b9c77fa145b48fb8c2105358251510&q=";
+    private String hoursRequestURL = "https://maps.googleapis.com/maps/api/place/details/json?place_id=";
+
     private RequestQueue requestQueue;
 
     /**
@@ -43,6 +48,16 @@ public class DetailActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_detail);
 
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+
+        // hide system bars.
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+
+        windowInsetsController.setSystemBarsBehavior(
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        );
+
         requestQueue = Volley.newRequestQueue(this);
 
         Intent intent = getIntent();
@@ -54,9 +69,10 @@ public class DetailActivity extends AppCompatActivity {
             double lat = park.lat;
             double lng = park.lng;
 
-            // create api urls
+            // call apis and update related UI elements
             loadStreetView(lat, lng);
             getWeatherData(lat, lng);
+            getSpecificHours(park.placeId);
 
 
             // update UI with park data
@@ -65,9 +81,6 @@ public class DetailActivity extends AppCompatActivity {
 
             TextView tvAddress = findViewById(R.id.tv_address_text);
             tvAddress.setText(park.address != null ? park.address : "Address not available");
-
-            TextView tvHours = findViewById(R.id.tv_hours_text);
-            tvHours.setText(park.hours != null ? park.hours : "Hours not available");
 
             RatingBar ratingBar = findViewById(R.id.rb_ratingBar);
             ratingBar.setRating((float) park.rating);
@@ -155,5 +168,90 @@ public class DetailActivity extends AppCompatActivity {
         else {
             tvWeather.setText("Temperature: " + tempCel + "°C, " + conditionText);
         }
+    }
+
+    /**
+     * gets detailed hours(opening and closing) from google places api
+     * current hours only specify whether a location is currently open or closed
+     * @param placeID Google Place ID of the park
+     */
+    private void getSpecificHours(String placeID) {
+        if (placeID == null || placeID.isEmpty()) {
+            Log.e("Hours", "Invalid placeID: " + placeID);
+            updateHoursUI("Hours Unavailable");
+            return;
+        }
+
+        String hoursUrl = hoursRequestURL + placeID + "&fields=opening_hours" + "&key=AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo";
+        Log.d("Hours", "URL: " + hoursUrl);
+
+        JsonObjectRequest hoursRequest = new JsonObjectRequest(
+            Request.Method.GET,
+            hoursUrl,
+            null,
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.d("Hours", "Response: " + response.toString());
+                    try {
+                        JSONObject result = response.getJSONObject("result");
+
+                        if (result.has("opening_hours")) {
+                            JSONObject openingHours = result.getJSONObject("opening_hours");
+
+                            if (openingHours.has("weekday_text")) {
+                                JSONArray weekdayText = openingHours.getJSONArray("weekday_text");
+                                StringBuilder hoursText = new StringBuilder();
+
+                                for (int i = 0; i < weekdayText.length(); i++) {
+                                    hoursText.append(weekdayText.getString(i));
+
+                                    // new line in between each day other than sunday
+                                    if (i < weekdayText.length() - 1){
+                                        hoursText.append("\n");
+                                    }
+                                }
+
+                                updateHoursUI(hoursText.toString());
+                            }
+                            else {
+                                updateHoursUI("Hours Unavailable");
+                            }
+                        }
+                        else {
+                            updateHoursUI("Hours Unavailable");
+                        }
+
+                    } catch (Exception e) {
+                        Log.e("Hours", "Error parsing hours JSON: " + e.getMessage());
+                        updateHoursUI("Hours Unavailable");
+                    }
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("Hours", "Hours API error: " + error.toString());
+                    updateHoursUI("Hours Unavailable");
+                }
+            }
+        );
+        requestQueue.add(hoursRequest);
+    }
+
+    /**
+     * update UI with hours data
+     * @param hours Hours data in String format
+     */
+    private void updateHoursUI(String hours) {
+        Log.d("Hours", "hours: " + hours);
+        TextView tvHours = findViewById(R.id.tv_hours_text);
+
+        if (hours.equals("Hours Unavailable")) {
+            tvHours.setText(hours);
+        }
+
+        tvHours.setText(hours);
+
     }
 }

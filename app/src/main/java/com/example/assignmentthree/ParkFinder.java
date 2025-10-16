@@ -54,6 +54,8 @@ public class ParkFinder {
                 location.latitude, location.longitude, radius, apiKey
         );
 
+        Log.d("ParkFinder", "URL: " + apiUrl);
+
         // request to get parks
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, apiUrl, null,
                 new Response.Listener<JSONObject>() {

@@ -36,6 +36,7 @@ public class Parks implements Parcelable {
         this.name = json.optString("name", "Unknown");
         this.address = json.optString("address", json.optString("vicinity", ""));
         this.rating = json.optDouble("rating", 0.0);
+        this.hours = json.optString("opening_hours", "");
 
         // get latlng and parse into separate doubles
         JSONObject geometry = json.optJSONObject("geometry");
@@ -67,6 +68,7 @@ public class Parks implements Parcelable {
         lng = in.readDouble();
         address = in.readString();
         rating = in.readDouble();
+        hours = in.readString();
     }
 
     /**
@@ -105,5 +107,6 @@ public class Parks implements Parcelable {
         dest.writeDouble(lng);
         dest.writeString(address);
         dest.writeDouble(rating);
+        dest.writeString(hours);
     }
 }
