@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class ParkFinder {
     private RequestQueue queue; // to send requests
     private String apiKey = "AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo"; // api key to assess api/s
+    public ArrayList<Parks> foundParks = new ArrayList<>(); // public field to store found parks
 
     /**
      * callback interface for getting parks
@@ -65,6 +66,9 @@ public class ParkFinder {
                         Log.d("ParkFinder", "Response: " + response.toString());
                         try {
                             ArrayList<Parks> out = parse(response, limit);
+                            // clear old parks and add new
+                            foundParks.clear();
+                            foundParks.addAll(out);
                             cb.onSuccess(out);
                         } catch (Exception e) {
                             cb.onError(e);

@@ -81,7 +81,7 @@ public class DetailActivity extends AppCompatActivity {
             tvName.setText(park.name);
 
             TextView tvAddress = findViewById(R.id.tv_address_text);
-            tvAddress.setText(park.address != null ? park.address : "Address not available");
+            tvAddress.setText(park.address != null && !park.address.isEmpty() ? park.address : "Address not available");
 
             RatingBar ratingBar = findViewById(R.id.rb_ratingBar);
             ratingBar.setRating((float) park.rating);

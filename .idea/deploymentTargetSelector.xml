@@ -5,16 +5,16 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="StartButtonTest">
+      <SelectionState runConfigName="ParkParceableTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SearchFunctionalityTest">
+      <SelectionState runConfigName="ParkObjectTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="DetailActivityDataDisplay">
+      <SelectionState runConfigName="StringFormattingTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="DetailActivityDataDisplayTest">
+      <SelectionState runConfigName="ParkFinderTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
