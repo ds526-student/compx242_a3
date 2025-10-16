@@ -248,18 +248,21 @@ public class DetailActivity extends AppCompatActivity {
         Log.d("Hours", "hours: " + hours);
         TextView tvHours = findViewById(R.id.tv_hours_text);
 
-        if (hours.equals("Hours Unavailable")) {
-            tvHours.setText(hours);
+        if (hours == null || hours.isEmpty()) {
+            hours = "Hours Unavailable";
         }
 
         tvHours.setText(hours);
-
     }
 
+    /**
+     * gets 5 reviews from google places api
+     * @param placeID Google Place ID of the park
+     */
     private void getReviews(String placeID) {
         if (placeID == null || placeID.isEmpty()) {
-            Log.e("Hours", "Invalid placeID: " + placeID);
-            updateHoursUI("Hours Unavailable");
+            Log.e("Reviews", "Invalid placeID: " + placeID);
+            updateReviewsUI("Hours Unavailable");
             return;
         }
 
@@ -281,7 +284,8 @@ public class DetailActivity extends AppCompatActivity {
                             JSONArray reviews = result.getJSONArray("reviews");
                             StringBuilder reviewsText = new StringBuilder();
 
-                            for (int i = 0; i < MAX_REVIEWS; i++) {
+                            int reviewCount = Math.min(reviews.length(), MAX_REVIEWS);
+                            for (int i = 0; i < reviewCount; i++) {
                                 JSONObject review = reviews.getJSONObject(i);
 
                                 String author = review.optString("author_name", "Anonymous");
@@ -310,14 +314,23 @@ public class DetailActivity extends AppCompatActivity {
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    Log.e("Reviews", "Reviews API error: " + error.toString());
+                    updateReviewsUI("No reviews available");
                 }
             }
         );
         requestQueue.add(reviewsRequest);
     }
 
+    /**
+     * update UI with reviews data
+     * @param reviews Reviews data in String format
+     */
     private void updateReviewsUI(String reviews) {
+        if (reviews == null || reviews.isEmpty()) {
+            reviews = "No reviews available";
+        }
+
         TextView tvReviews = findViewById(R.id.tv_reviews_text);
         tvReviews.setText(reviews);
     }
