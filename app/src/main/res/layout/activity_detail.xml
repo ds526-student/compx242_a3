@@ -166,5 +166,15 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!-- Reviews text -->
+        <TextView
+            android:id="@+id/tv_reviews_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/black"
+            android:padding="8dp"
+            android:text="@string/review_placeholder" />
+
     </LinearLayout>
 </ScrollView>

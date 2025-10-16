@@ -28,10 +28,10 @@ import org.json.JSONObject;
 
 public class DetailActivity extends AppCompatActivity {
 
-
+    private final Integer MAX_REVIEWS = 5;
     private String placeRequestURL = "https://maps.googleapis.com/maps/api/streetview?size=720x1280&key=AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo&location=";
     private String weatherRequestURL = "https://api.weatherapi.com/v1/current.json?key=5b9c77fa145b48fb8c2105358251510&q=";
-    private String hoursRequestURL = "https://maps.googleapis.com/maps/api/place/details/json?place_id=";
+    private String informationRequestURL = "https://maps.googleapis.com/maps/api/place/details/json?place_id=";
 
     private RequestQueue requestQueue;
 
@@ -73,6 +73,7 @@ public class DetailActivity extends AppCompatActivity {
             loadStreetView(lat, lng);
             getWeatherData(lat, lng);
             getSpecificHours(park.placeId);
+            getReviews(park.placeId);
 
 
             // update UI with park data
@@ -86,7 +87,7 @@ public class DetailActivity extends AppCompatActivity {
             ratingBar.setRating((float) park.rating);
 
             TextView tvReviews = findViewById(R.id.tv_reviews_overview);
-            tvReviews.setText(String.valueOf(park.rating));
+            tvReviews.setText(park.rating + " stars");
         }
     }
 
@@ -182,7 +183,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        String hoursUrl = hoursRequestURL + placeID + "&fields=opening_hours" + "&key=AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo";
+        String hoursUrl = informationRequestURL + placeID + "&fields=opening_hours" + "&key=AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo";
         Log.d("Hours", "URL: " + hoursUrl);
 
         JsonObjectRequest hoursRequest = new JsonObjectRequest(
@@ -254,4 +255,72 @@ public class DetailActivity extends AppCompatActivity {
         tvHours.setText(hours);
 
     }
+
+    private void getReviews(String placeID) {
+        if (placeID == null || placeID.isEmpty()) {
+            Log.e("Hours", "Invalid placeID: " + placeID);
+            updateHoursUI("Hours Unavailable");
+            return;
+        }
+
+        String reviewsUrl = informationRequestURL + placeID + "&fields=reviews" + "&key=AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo";
+        Log.d("Reviews", "URL: " + reviewsUrl);
+
+        JsonObjectRequest reviewsRequest = new JsonObjectRequest(
+            Request.Method.GET,
+            reviewsUrl,
+            null,
+                new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.d("Reviews", "Response: " + response.toString());
+                    try {
+                        JSONObject result = response.getJSONObject("result");
+
+                        if (result.has("reviews")) {
+                            JSONArray reviews = result.getJSONArray("reviews");
+                            StringBuilder reviewsText = new StringBuilder();
+
+                            for (int i = 0; i < MAX_REVIEWS; i++) {
+                                JSONObject review = reviews.getJSONObject(i);
+
+                                String author = review.optString("author_name", "Anonymous");
+                                int rating = review.optInt("rating", 0);
+                                String text = review.optString("text", "");
+
+                                reviewsText.append(author)
+                                        .append(" (")
+                                        .append(rating)
+                                        .append(" stars)\n")
+                                        .append(text)
+                                        .append("\n\n");
+                            }
+                            updateReviewsUI(reviewsText.toString());
+                        }
+                        else {
+                            updateReviewsUI("No reviews available");
+                        }
+
+                    } catch (Exception e) {
+                        Log.e("Reviews", "Error parsing reviews JSON: " + e.getMessage());
+                        updateReviewsUI("No reviews available");
+                    }
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }
+        );
+        requestQueue.add(reviewsRequest);
+    }
+
+    private void updateReviewsUI(String reviews) {
+        TextView tvReviews = findViewById(R.id.tv_reviews_text);
+        tvReviews.setText(reviews);
+    }
+
+
 }

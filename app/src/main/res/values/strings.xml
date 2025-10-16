@@ -27,5 +27,7 @@
     <string name="weather_placeholder">Weather unavailable</string>
     <string name="reviews_placeholder">Rating unavailable</string>
     <string name="name_placeholder">Name unavailable</string>
+    <string name="review_placeholder">No Reviews available</string>
+
 
 </resources>
