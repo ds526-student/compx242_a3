@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class ParkFinder {
     private RequestQueue queue; // to send requests
-    private String apiKey = "AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo"; // api key to assess api/s
+    private String apiKey = "null"; // api key to assess api/s
     public ArrayList<Parks> foundParks = new ArrayList<>(); // public field to store found parks
 
     /**

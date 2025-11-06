@@ -83,7 +83,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         // sets up places api
-        Places.initialize(getApplicationContext(), "AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo");
+        Places.initialize(getApplicationContext(), "null");
 
         fusedLocation = LocationServices.getFusedLocationProviderClient(this);
         pf = new ParkFinder(this);

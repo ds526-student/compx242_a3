@@ -29,8 +29,8 @@ import org.json.JSONObject;
 public class DetailActivity extends AppCompatActivity {
 
     private final Integer MAX_REVIEWS = 5;
-    private String placeRequestURL = "https://maps.googleapis.com/maps/api/streetview?size=720x1280&key=AIzaSyB1_c9jegq1TxbJW4CBRDncl5Z4gU3VWbo&location=";
-    private String weatherRequestURL = "https://api.weatherapi.com/v1/current.json?key=5b9c77fa145b48fb8c2105358251510&q=";
+    private String placeRequestURL = "https://maps.googleapis.com/maps/api/streetview?size=720x1280&key=null";
+    private String weatherRequestURL = "https://api.weatherapi.com/v1/current.json?key=null=";
     private String informationRequestURL = "https://maps.googleapis.com/maps/api/place/details/json?place_id=";
 
     private RequestQueue requestQueue;
